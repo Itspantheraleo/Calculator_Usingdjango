@@ -6,7 +6,7 @@ def index(request):
     return render(request,'index.html')
 
 def submitquery(request):
-    q = request.GET['query']
+    q = request.GET.get('query','')
     try:
         ans=eval(q)
         mydict={
@@ -14,7 +14,11 @@ def submitquery(request):
             'ans':ans,
             'error':False,
         }
-        return render(request,'index.html',context=mydict)
-    except:
-        pass
+    except Exception as e:
+        mydict={
+            'q':q,
+            "error":True, 
+            'ans':None,
+        }
+    return render(request,'index.html',context=mydict)
 
